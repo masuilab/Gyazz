@@ -2,9 +2,8 @@
 # リンク情報
 #
 
-debug = require('debug')('gyazz:pair')
-_ = require 'underscore'
-
+debug    = require('debug')('gyazz:pair')
+_        = require 'underscore'
 mongoose = require 'mongoose'
 
 module.exports = (app) ->
@@ -19,20 +18,20 @@ module.exports = (app) ->
 
   # pageに関連するページの配列を得る
   pairSchema.statics.related = (wiki, title, callback) ->
-    debug "Pairs.related"
+    debug "Pair.related"
     e = false
     related = {}
-    Pairs.find {wiki:wiki, title1:title}, (err, results) ->
+    @find {wiki:wiki, title1:title}, (err, results) =>
       e ||= err
       for pair in results
         related[pair.title2] = 1
-      Pairs.find {wiki:wiki, title2:title}, (err, results) ->
+      @find {wiki:wiki, title2:title}, (err, results) ->
         e ||= err
         for pair in results
           related[pair.title1] = 1
         
         debug _.keys(related)
         callback e, _.keys(related)
-          
 
-  Pairs = mongoose.model 'Pairs', pairSchema
+
+  mongoose.model 'Pair', pairSchema
