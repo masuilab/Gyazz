@@ -18,7 +18,7 @@ module.exports = app = express()
 app.use express.static path.resolve 'public'
 # app.set 'view engine', 'ejs'
 app.set 'view engine', 'jade'
-app.locals.pretty = true       # jade出力を整形する 
+app.locals.pretty = true       # jade出力を整形する
 
 ## load controllers, models, socket.io ##
 components =
