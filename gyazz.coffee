@@ -11,6 +11,7 @@ debug    = require('debug')('gyazz:app')
 ## express modules
 bodyParser = require 'body-parser'
 multer     = require 'multer'
+rollbar    = require 'rollbar'
 
 ## Config
 package_json = require path.resolve 'package.json'
@@ -25,6 +26,7 @@ app.set 'view engine', 'jade'
 app.use bodyParser.json()
 app.use bodyParser.urlencoded()
 app.use multer { dest: './public/upload/'}
+app.use rollbar.errorHandler process.env.ROLLBAR_TOKEN if process.env.ROLLBAR_TOKEN
 
 if process.env.NODE_ENV isnt 'production'
   app.locals.pretty = true  # jade出力を整形
