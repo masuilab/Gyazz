@@ -35,6 +35,9 @@ html
         else
           | #{title}
 
+      span.share
+        input.btn_share(type="button", value="share")
+
       span#debug
 
       form.search(action="/#{wiki}/__search", method="get")
@@ -81,5 +84,6 @@ html
     script(src="/javascripts/gyazz_display.js")
     script(src="/javascripts/gyazz_socket.js")
     script(src="/javascripts/gyazz_location.js")
+    script(src="/javascripts/gyazz_toolbar.js")
     script(src="/javascripts/gyazz.js")
     script(src="//maps.googleapis.com/maps/api/js?sensor=false")
