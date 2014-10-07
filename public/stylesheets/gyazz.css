@@ -79,6 +79,11 @@ span.wordtitle {
 /* float:left; */
   color:blue;
 }
+.btn_share{
+  background-color: #FFF;
+  font-weight: bold;
+  border-style: none;
+}
 span.memotitle {
   color:darkgreen;
 }
