@@ -35,9 +35,9 @@ app.disable 'x-powered-by'
 app.use favicon path.resolve 'public/favicon.ico'
 app.use express.static path.resolve 'public'  # public以下のファイルはWikiデータとみなさないようにする
 app.set 'view engine', 'jade'
-app.use bodyParser.json()
-app.use bodyParser.urlencoded()
-app.use multer { dest: './public/upload/'}
+app.use bodyParser.json limit: '100mb'
+app.use bodyParser.urlencoded extended: true, limit: '100mb'
+app.use multer dest: path.resolve 'public', 'upload'
 app.use rollbar.errorHandler process.env.ROLLBAR_TOKEN if process.env.ROLLBAR_TOKEN
 
 if process.env.NODE_ENV isnt 'production'
