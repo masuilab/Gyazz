@@ -13,7 +13,6 @@
     "async": "^0.9.0",
     "body-parser": "~1.0.0",
     "buffer-crc32": "*",
-    "chai": "*",
     "coffee-errors": "*",
     "coffee-script": "^1.7.1",
     "coffeelint": "*",
@@ -27,12 +26,10 @@
     "grunt-contrib-coffee": "*",
     "grunt-contrib-csslint": "*",
     "grunt-contrib-watch": "*",
-    "grunt-jsonlint": "*",
     "grunt-notify": "*",
-    "grunt-simple-mocha": "*",
     "jade": "*",
+    "jit-grunt": "^0.9.0",
     "memjs": "*",
-    "mocha": "*",
     "mongoose": "3.x",
     "morgan": "^1.0.0",
     "multer": "~0.1.4",
@@ -41,7 +38,6 @@
     "rollbar": "^0.3.13",
     "serve-favicon": "*",
     "socket.io": "^1.0.6",
-    "supertest": "*",
     "underscore": "*"
   },
   "homepage": "https://github.com/masuilab/Gyazz",
@@ -51,8 +47,12 @@
     "test": "tests"
   },
   "devDependencies": {
-    "coffee-script": "^1.7.1",
-    "mocha": "^1.21.3"
+    "chai": "^1.9.2",
+    "grunt-coffeelint": "0.0.13",
+    "grunt-jsonlint": "^1.0.4",
+    "grunt-simple-mocha": "^0.4.0",
+    "mocha": "^1.21.5",
+    "supertest": "^0.14.0"
   },
   "repository": {
     "type": "git",
