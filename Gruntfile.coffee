@@ -2,15 +2,12 @@
 
 module.exports = (grunt) ->
 
+  (require 'jit-grunt') grunt,
+    simplemocha: 'grunt-simple-mocha'
+
   require 'coffee-errors'
 
-  grunt.loadNpmTasks 'grunt-contrib-watch'
-  grunt.loadNpmTasks 'grunt-contrib-csslint'
-  grunt.loadNpmTasks 'grunt-jsonlint'
-  grunt.loadNpmTasks 'grunt-coffeelint'
-  grunt.loadNpmTasks 'grunt-simple-mocha'
   grunt.loadNpmTasks 'grunt-notify'
-  grunt.loadNpmTasks 'grunt-contrib-coffee'
 
   grunt.registerTask 'test', [
     'coffeelint'
