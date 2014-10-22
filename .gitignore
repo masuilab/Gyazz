@@ -9,3 +9,4 @@ public/javascripts/*.js
 dump/gyazz
 .vagrant
 */upload/*
+.env
