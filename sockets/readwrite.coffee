@@ -10,8 +10,6 @@ Page  = mongoose.model 'Page'
 Line  = mongoose.model 'Line'
 Pair  = mongoose.model 'Pair'
 
-write_timeout_ids = {}
-
 module.exports = (app) ->
   io = app.get 'socket.io'
 

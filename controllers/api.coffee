@@ -111,7 +111,6 @@ module.exports = (app) ->
           error: err
       res.send result
 
-
   writetime = {}
 
   # データ書込み (apiとしてだけ用意)
@@ -120,6 +119,16 @@ module.exports = (app) ->
     wiki  = req.body.name
     title = req.body.title
     text  = req.body.data
+    writedata wiki, title, text, res
+
+  app.get '/__write', (req, res) ->
+    debug "__write: "
+    wiki  = req.query.name
+    title = req.query.title
+    text  = req.query.data
+    writedata wiki, title, text, res
+
+  writedata = (wiki, title, text, res) ->
     if !Page.isValidName(wiki) or !Page.isValidName(title)
       res.status(400).end "Invalid name - wiki:#{wiki}, title:#{title}"
       return
