@@ -1,4 +1,4 @@
-socket = io.connect "#{location.protocol}//#{location.hostname}?wiki=#{encodeURI wiki}&title=#{encodeURI title}"
+socket = io.connect "#{location.protocol}//#{location.hostname}?wiki=#{encodeURIComponent wiki}&title=#{encodeURIComponent title}"
 gt = new GyazzTag
 
 getData = ->
