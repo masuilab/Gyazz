@@ -95,7 +95,7 @@ module.exports = (app) ->
         feed_url: "#{site_url}/#{wiki}/rss.xml"
         site_url: site_url
         image_url: "#{site_url}/favicon.ico"
-        docs: "http://gyazz.com/masui/gyazz"
+        docs: "http://github.com/masuilab/gyazz"
         managingEditor: "toshiyuki masui"
         webMaster: "http://gihub.com/masuilab/gyazz"
         copyright: "2014 "
