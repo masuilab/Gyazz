@@ -36,6 +36,7 @@
     "newrelic": "^1.10.3",
     "request": "*",
     "rollbar": "^0.3.13",
+    "rss": "^1.0.1",
     "serve-favicon": "*",
     "socket.io": "^1.0.6",
     "underscore": "*"
