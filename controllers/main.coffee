@@ -102,9 +102,9 @@ module.exports = (app) ->
 
       for page in docs
         feed.item
-          title: page.title
+          title: page._id
           description: page.text
-          url: "#{site_url}/#{wiki}/rss.xml"
+          url: "#{site_url}/#{wiki}/#{page._id}"
           #guid: "" # optional - defaults to url
           #categories: [] # optional - array of item categories
           #author: "" # optional - defaults to feed author property
