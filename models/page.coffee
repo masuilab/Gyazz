@@ -9,7 +9,7 @@ memjs    = require 'memjs'
 cache    = memjs.Client.create null, {expires: 60}
 
 module.exports = (app) ->
-  
+
   Access = mongoose.model 'Access'
 
   ## ページ名/WiKi名が正しい名前かどうか
@@ -172,14 +172,18 @@ module.exports = (app) ->
   # db.access.ensureIndex({ timestamp: 1 })
 
   # Pages.mlist() 更新順にページタイトルのリストを取得
-  pageSchema.statics.mlist = (wiki, callback) ->
-    timesort this, this, wiki, callback
+  pageSchema.statics.mlist = (wiki,options,callback) ->
+    callback = arguments[arguments.length-1]
+    includeText = if options?.includeText? then options.includeText else false
+    timesort this, this, wiki, includeText, callback
 
   # Pages.alist() アクセス順にページタイトルのリストを取得
-  pageSchema.statics.alist = (wiki, callback) ->
-    timesort this, Access, wiki, callback
-    
-  timesort = (pagedb, db, wiki, callback) ->
+  pageSchema.statics.alist = (wiki, options,callback) ->
+    callback = arguments[arguments.length-1]
+    includeText = if options?.includeText? then options.includeText else false
+    timesort this, Access, wiki, includeText, callback
+
+  timesort = (pagedb, db, wiki, includeText, callback) ->
     # まず、中身が空のページをさがす
     pagedb.aggregate
       $match:
@@ -209,7 +213,13 @@ module.exports = (app) ->
         $match:
           wiki: wiki
       ,
-        $group:
+        $group:if includeText
+          _id: "$title"
+          timestamp:
+            $last: "$timestamp"
+          text:
+            $last:"$text"
+        else
           _id: "$title"
           timestamp:
             $last: "$timestamp"
@@ -246,7 +256,7 @@ module.exports = (app) ->
 
   MAX = 25
   MAXH = 12
-  
+
   accumulate_log = (history) ->
     now = new Date
     v = []
@@ -261,7 +271,7 @@ module.exports = (app) ->
       v[i] = 0 unless v[i]
       Math.floor Math.log(v[i]+1.2) * 3
       # Math.floor Math.log(v[i]+0.9) * 3
-    
+
   visualize = (access_log, modify_log, callback) ->
     data = []
 
@@ -270,7 +280,7 @@ module.exports = (app) ->
     bgcolor = [255,255,255]
     [0..5].reverse().map (i) ->
       bgcolor = hotcolors[i] if modify_log[i] > 0
-    
+
     [0...MAXH].map (y) ->
       data[y] = []
       [0...MAX].map (x) ->
@@ -289,7 +299,7 @@ module.exports = (app) ->
       [0...d].map (y) ->
         data[MAXH-y-1][MAX-i-1] = [0,0,0]
     callback false, data
-      
+
   # Pages.search() 検索
   pageSchema.statics.search = (wiki, query, callback) ->
     @aggregate
