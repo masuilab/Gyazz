@@ -4,6 +4,7 @@
 
 debug    = require('debug')('gyazz:controller:main')
 mongoose = require 'mongoose'
+RSS      = require 'rss'
 
 Page  = mongoose.model 'Page'
 Pair  = mongoose.model 'Pair'
@@ -68,6 +69,55 @@ module.exports = (app) ->
           wiki:    wiki
           rawdata: rawdata
 
+
+  # RSSを出力する
+  app.get  /^\/([^\/]+)\/rss.xml$/, (req, res) ->
+    wiki = req.params[0]
+    if !Page.isValidName wiki
+      return res.send 404
+
+    # ドキュメントを取得
+    Page.mlist wiki,{includeText:true},(err,docs)->
+      if err
+        debug "pagelist get error:#{err}"
+        return res.status(500).send err
+
+      # フィード作成
+      subdomains = if req.subdomains.length > 0 then "#{req.subdomains.join('.')}." else ""
+      site_url = "#{req.protocol}://#{subdomains}#{req.get "host"}"
+
+      feed = new RSS
+        title: "Gyazz:#{wiki}"
+        description: "description"
+        feed_url: "#{site_url}/#{wiki}/rss.xml"
+        site_url: site_url
+        image_url: "#{site_url}/favicon.ico"
+        docs: "http://github.com/masuilab/gyazz"
+        managingEditor: "toshiyuki masui"
+        webMaster: "http://gihub.com/masuilab/gyazz"
+        copyright: "2014 "
+        language: "ja"
+        categories: []
+        pubDate: docs[0].timestamp
+
+      for page in docs
+        feed.item
+          title: page.title
+          description: page.text
+          url: "#{site_url}/#{wiki}/rss.xml"
+          #guid: "" # optional - defaults to url
+          #categories: [] # optional - array of item categories
+          #author: "" # optional - defaults to feed author property
+          date: page.timestamp # any format that js Date can parse.
+          #lat : 33.417974 #optional latitude field for GeoRSS
+          #long: -111.933231 #optional longitude field for GeoRSS
+          #enclosure: # optional enclosure
+            #url: "..."
+            #file: "path-to-file"
+      res.set
+        "Content-Type": "text/xml"
+      res.send feed.xml()
+
   # 普通にページアクセス
   app.get /^\/([^\/]+)\/(.+)$/, (req, res) ->
     wiki  = req.params[0]
@@ -115,3 +165,4 @@ module.exports = (app) ->
         pages: list
 
       res.render 'search', args
+
