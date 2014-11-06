@@ -77,12 +77,9 @@ module.exports = (app) ->
       return res.send 404
 
     # ドキュメントを取得
-    # @note limit数を制御出来るようにする?
-    Page.find
-      wiki: wiki
-    .sort(timestamp:-1).limit(30).exec (err,docs)->
+    Page.mlist wiki,{includeText:true},(err,docs)->
       if err
-        debug "pageObject get error:#{err}"
+        debug "pagelist get error:#{err}"
         return res.status(500).send err
 
       # フィード作成
