@@ -1,6 +1,4 @@
-query = $.param
-  wiki:  wiki
-  title: title
+query = "wiki=#{encodeURIComponent wiki}&title=#{encodeURIComponent title}"
 
 socket = io.connect "#{location.protocol}//#{location.hostname}?#{query}"
 gt = new GyazzTag
