@@ -98,7 +98,7 @@ module.exports = (app) ->
         copyright: "2014 "
         language: "ja"
         categories: []
-        pubDate: docs[0].timestamp
+        pubDate: docs[0]?.timestamp || new Date()
 
       for page in docs
         feed.item
