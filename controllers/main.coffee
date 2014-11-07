@@ -100,6 +100,9 @@ module.exports = (app) ->
         categories: []
         pubDate: docs[0]?.timestamp || new Date()
 
+      # Limit
+      docs = docs.slice(0,20) if docs.length > 20
+
       for page in docs
         feed.item
           title: page._id
