@@ -39,7 +39,7 @@ module.exports = (app) ->
     title = req.params[1]
     debug "Getting #{wiki}/#{title}/json"
     debug JSON.stringify req.query # { suggest, version, age }
-    Page.json wiki, title, req.query, (err, page) ->
+    Page.findByName wiki, title, req.query, (err, page) ->
       if err
         return res.send
           error: 'An error has occurred'
