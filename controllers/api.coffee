@@ -32,6 +32,17 @@ module.exports = (app) ->
       else
         return res.status(404).send "image not found"
 
+  #  PageList API
+  app.get '/:wiki/__list', (req, res) ->
+    wiki = req.params.wiki
+    Page.alist wiki, (err, list) ->
+      if err
+        debug "pagelist get error: #{err}"
+        res.status(500).send err
+        return
+
+      res.send
+        data:        list
 
   #  ページ内容取得 (apiとしてだけ)用意
   app.get /^\/([^\/]+)\/(.*)\/json$/, (req, res) ->
@@ -165,7 +176,7 @@ module.exports = (app) ->
               line.save (err) ->
                 if err
                   debug "line write error"
-    
+
   # ファイルアップロード
   fs = require 'fs'
   crypto = require 'crypto'
