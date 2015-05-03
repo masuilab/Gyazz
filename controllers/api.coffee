@@ -47,12 +47,27 @@ module.exports = (app) ->
   app.get /^\/([^\/]+)\/(.*)\/json$/, (req, res) ->
     wiki  = req.params[0]
     title = req.params[1]
+    if !Page.isValidName(title) or !Page.isValidName(wiki)
+      title = Page.toValidName title
+      wiki  = Page.toValidName wiki
+      return res.redirect "/#{wiki}/#{title}/json"
+
     debug "Getting #{wiki}/#{title}/json"
     debug JSON.stringify req.query # { suggest, version, age }
-    Page.findByName wiki, title, req.query, (err, page) ->
+
+    escape_regexp_token = (str) ->
+      return str.replace /[\\\+\*\.\[\]\{\}\(\)\^\|]/g, (c) -> "\\#{c}"
+    title_regexp =
+      new RegExp "^#{escape_regexp_token title.replace(/\s/g,'').split('').join(' ?')}$", 'i'
+
+    Page.findByName wiki, title_regexp, req.query, (err, page) ->
       if err
-        return res.send
+        res.send
           error: 'An error has occurred'
+        return
+      if page? and title isnt page?.title and !page?.isEmpty()
+        res.redirect "/#{page.wiki}/#{page.title}/json"
+        return
       data =  page?.text.split(/\n/) or []
       # 行ごとの古さを計算する
       Line.timestamps wiki, title, data, (err, timestamps) ->
