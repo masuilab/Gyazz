@@ -2,9 +2,12 @@
 # メインコントローラモジュール
 #
 
+path     = require 'path'
 debug    = require('debug')('gyazz:controller:main')
 mongoose = require 'mongoose'
 RSS      = require 'rss'
+
+GyazzMarkup = require path.resolve 'lib/markup'
 
 Page  = mongoose.model 'Page'
 Pair  = mongoose.model 'Pair'
@@ -103,10 +106,11 @@ module.exports = (app) ->
       # Limit
       docs = docs.slice(0,20) if docs.length > 20
 
+      markup = new GyazzMarkup host: site_url, wiki: wiki
       for page in docs
         feed.item
           title: page._id
-          description: page.text
+          description: markup.markup page.text, escape: false
           url: "#{site_url}/#{wiki}/#{page._id}"
           #guid: "" # optional - defaults to url
           #categories: [] # optional - array of item categories
