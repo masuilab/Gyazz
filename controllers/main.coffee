@@ -90,14 +90,12 @@ module.exports = (app) ->
       site_url = "#{req.protocol}://#{subdomains}#{req.get "host"}"
 
       feed = new RSS
-        title: "Gyazz:#{wiki}"
-        description: "description"
+        title: "Gyazz::#{wiki}"
         feed_url: "#{site_url}/#{wiki}/rss.xml"
         site_url: site_url
         image_url: "#{site_url}/favicon.ico"
         docs: "http://github.com/masuilab/gyazz"
-        managingEditor: "toshiyuki masui"
-        webMaster: "http://gihub.com/masuilab/gyazz"
+        webMaster: "https://gihub.com/masuilab/gyazz"
         copyright: "2014 "
         language: "ja"
         categories: []
@@ -105,22 +103,21 @@ module.exports = (app) ->
 
       # Limit
       docs = docs.slice(0,20) if docs.length > 20
-
       markup = new GyazzMarkup host: site_url, wiki: wiki
+
       for page in docs
+        description = "<ul>"
+        description += page.text
+          .split /[\r\n]/
+          .map (line) -> "<li>#{markup.markup line, escape: false}</li>"
+          .join ''
+        description += "</ul>"
+
         feed.item
           title: page._id
-          description: markup.markup page.text, escape: false
+          description: description
           url: "#{site_url}/#{wiki}/#{page._id}"
-          #guid: "" # optional - defaults to url
-          #categories: [] # optional - array of item categories
-          #author: "" # optional - defaults to feed author property
           date: page.timestamp # any format that js Date can parse.
-          #lat : 33.417974 #optional latitude field for GeoRSS
-          #long: -111.933231 #optional longitude field for GeoRSS
-          #enclosure: # optional enclosure
-            #url: "..."
-            #file: "path-to-file"
       res.set
         "Content-Type": "text/xml"
       res.send feed.xml()
