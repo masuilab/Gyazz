@@ -2,7 +2,7 @@ class GyazzSocket
 
   init: (gb, gd, gt) ->
     query = "wiki=#{encodeURIComponent wiki}&title=#{encodeURIComponent title}"
-    @socket = io.connect "#{location.protocol}//#{location.hostname}?#{query}"
+    @socket = io.connect "#{location.protocol}//#{location.host}?#{query}"
     @gb = gb
     @gd = gd
     @gt = gt
