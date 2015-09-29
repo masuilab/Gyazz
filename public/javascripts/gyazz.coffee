@@ -45,7 +45,7 @@ $ -> # = $(document).ready()
     y = $('<div>').attr('id',"listbg#{i}")
     x = $('<span>').attr('id',"list#{i}").mousedown(linefunc(i,gb))
     $('#contents').append(y.append(x))
-    
+
   b = $('body')
   b.bind "dragover", (e) -> false
   b.bind "dragend",  (e) -> false
@@ -54,40 +54,11 @@ $ -> # = $(document).ready()
     files = e.originalEvent.dataTransfer.files
     gu.sendfiles files
     false
-  
+
   $('#filterdiv').css('display','none')
   $("#filter").keyup (event) ->
     $('#filterdiv').css('display','none') if $('#filter').val() == ''
     gb.refresh()
-
-  $('#historyimage').hover ->
-    gd.showold = true
-  , ->
-    gd.showold = false
-    # socket実装にしたら要求が沢山出すぎるようになってしまった
-    # 要求中は次のものを出さないようにできるか?
-    gs.getdata
-      force: true
-    , (res) ->
-      gb.data    = res.data.concat()
-      gb.datestr = res.date
-      gd.display gb
-
-  $('#historyimage').mousemove (event) ->
-    imagewidth = parseInt($('#historyimage').attr('width'))
-    age = Math.floor((imagewidth + $('#historyimage').offset().left - event.pageX) * 25 / imagewidth)
-
-    if historycache[age]
-      show_history historycache[age]
-    else
-      gs.getdata
-        age:   age
-      , (res) ->
-        historycache[age] = res
-        show_history res
-        gb.data    = res.data.concat()
-        gb.datestr = res.date
-        gd.display gb
 
   gs.getdata
     force:   true
@@ -123,7 +94,7 @@ $(document).mousedown (event) ->
     if gb.editline != clickline # #27
       longPressTimeout = setTimeout longmousedown, 300
   true
-  
+
 $(document).keyup (event) ->
   gb.data[gb.editline] = $("#editline").val()
 
@@ -153,7 +124,7 @@ getversion = (n) ->
       gb.data = res.data.concat()
       gb.datestr = res.date
     gb.refresh()
-          
+
 $(document).keydown (event) ->
   kc = event.which
   sk = event.shiftKey
@@ -196,7 +167,7 @@ $(document).keydown (event) ->
     when kc >= 0x30 && kc <= 0x7e && gb.editline < 0 && !cd && !ck && $(':focus').attr('id') != 'search'
       $('#filterdiv').css('display','block')
       $('#filter').focus()
-      
+
 # 行クリックで呼ばれる関数をクロージャで定義
 window.linefunc = (n,gb) ->
   (event) ->
@@ -205,7 +176,7 @@ window.linefunc = (n,gb) ->
       gb.addblankline n, gb.line_indent(n)  # 上に行を追加
       gb.refresh()
     true
-    
+
 show_history = (res) ->
   gb.datestr =    res.date
   gb.timestamps = res.timestamps

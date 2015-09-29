@@ -28,6 +28,7 @@ $ ->
       last_data = data
       clearTimeout send_timeout
       send_timeout = setTimeout ->
+        return if /version=[1-9]/.test $('a#title').attr('href')
         keywords = _.flatten data.split(/\n/).map (line) ->
           gt.keywords(line, wiki, title, 0)
         socket.emit 'write',
