@@ -21,7 +21,7 @@
 crc32 = require 'buffer-crc32'
 zlib = require 'zlib'
 
-class PNG
+module.exports = class Png
   chunk = (type, data) ->
     buf = new Buffer data.length+12, 'binary'
     buf.writeUInt32BE data.length, 0
@@ -41,7 +41,7 @@ class PNG
     height = data.length
     width = data[0].length
     buf1 = new Buffer "\x89PNG\r\n\x1a\n", 'binary'
-  
+
     buf = new Buffer 13, 'binary'
     buf.writeUInt32BE width, 0
     buf.writeUInt32BE height, 4
@@ -53,12 +53,12 @@ class PNG
     buf2 = chunk "IHDR", buf
 
     imagebuf = new Buffer height * (width * 3 +1)
-    
+
     pos = 0
     data.map (line) ->
       d = [0].concat line... # http://stackoverflow.com/questions/4631525/
       d.map (c) -> imagebuf.writeUInt8 c, pos++
-      
+
     zlib.deflate imagebuf, (err, res) ->
       return if err
       buf3 = chunk "IDAT", new Buffer res, 'binary'
@@ -69,5 +69,3 @@ class PNG
       buf3.copy buf, 33
       buf4.copy buf, 33 + buf3.length
       callback buf
-          
-module.exports = PNG

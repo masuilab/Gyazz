@@ -5,7 +5,7 @@ class GyazzDisplay
 
   init: (tag) ->
     @tag = tag
-    
+
   version: -1
   showold: false
 
@@ -19,27 +19,27 @@ class GyazzDisplay
     $('#datestr').text if @version >= 0 || @showold then gb.datestr else ''
     $('#title').attr
       href: "/#{wiki}/#{title}/__edit?version=#{ if @version >= 0 then @version else 0 }"
-    
+
     if delay # ちょっと待ってもう一度呼び出す!
       setTimeout =>
         @display gb
       , 100
       return
-    
+
     input = $("#editline")
     if gb.editline == -1
       gb.deleteblankdata()
       input.css 'display', 'none'
-    
+
     contline = -1
     if gb.data.length == 0
       gb.data = ["(empty)"]
       gb.doi[0] = gb.maxindent()
-      
+
     [0...gb.data.length].forEach (i) =>
       ind = gb.line_indent i
       xmargin = ind * 30
-      
+
       t = $("#list#{i}")
       p = $("#listbg#{i}")
       if gb.doi[i] >= -gb.zoomlevel
@@ -93,7 +93,7 @@ class GyazzDisplay
                 gistFrameDoc = gistFrame.contentDocument
               else if gistFrame.contentWindow
                 gistFrameDoc = gistFrame.contentWindow.document
-              
+
               gistFrameDoc.open()
               gistFrameDoc.writeln(gistFrameHTML)
               gistFrameDoc.close()
@@ -111,8 +111,8 @@ class GyazzDisplay
       else
         t.css 'display', 'none'
         p.css 'display', 'none'
-  
-      
+
+
       # 各行のバックグラウンド色設定
       color = if (@version >= 0 || @showold) then bgcol(gb.timestamps[i]) else 'transparent'
       $("#listbg#{i}").css 'background-color', color
@@ -128,37 +128,37 @@ class GyazzDisplay
           defaultPosition: "bottom" #デフォルト表示位置
       else
         $("#listbg#{i}").removeClass('hover')
-        
+
     [gb.data.length...1000].forEach (i) ->
       $("#list#{i}").css('display','none')
       $("#listbg#{i}").css('display','none')
-    
+
     input.css('display', if gb.editline == -1 then 'none' else 'block')
-    
+
     gb.align()
-    
+
     # リファラを消すプラグイン
     # http://logic.moo.jp/memo.php/archive/569
     # http://logic.moo.jp/data/filedir/569_3.js
     #
     #jQuery.kill_referrer.rewrite.init()
     follow_scroll.call @, gb
-                
+
     # 編集中の行│画面外に移動した時に、ブラウザをスクロールして追随する
 
-  follow_scroll = (gb) =>
+  follow_scroll = (gb) ->
     # 編集中かどうかチェック
     return if gb.editline < 0
     return if @showold
-    
+
     currentLinePos = $("#editline").offset().top
     return if !(currentLinePos && currentLinePos > 0)
     currentScrollPos = $("body").scrollTop()
     windowHeight = window.innerHeight
-    
+
     # 編集中の行が画面内にある場合、スクロールする必要が無い
     return if currentScrollPos < currentLinePos && currentLinePos < currentScrollPos+windowHeight
-    
+
     $("body").stop().animate({'scrollTop': currentLinePos - windowHeight/2}, 200)
 
 window.GyazzDisplay = GyazzDisplay
