@@ -44,15 +44,16 @@ module.exports = (app) ->
         data: list
 
   #  ページ内容取得 (apiとしてだけ)用意
-  app.get /^\/([^\/]+)\/(.*)\/json$/, (req, res) ->
+  app.get /^\/([^\/]+)\/(.*)\/(text|json)$/, (req, res) ->
     wiki  = req.params[0]
     title = req.params[1]
+    ext   = req.params[2]
     if !Page.isValidName(title) or !Page.isValidName(wiki)
       title = Page.toValidName title
       wiki  = Page.toValidName wiki
-      return res.redirect "/#{wiki}/#{title}/json"
+      return res.redirect "/#{wiki}/#{title}/#{ext}"
 
-    debug "Getting #{wiki}/#{title}/json"
+    debug "Getting #{wiki}/#{title}/#{ext}"
     debug JSON.stringify req.query # { suggest, version, age }
 
     escape_regexp_token = (str) ->
@@ -66,16 +67,22 @@ module.exports = (app) ->
           error: 'An error has occurred'
         return
       if page? and title isnt page?.title and !page?.isEmpty()
-        res.redirect "/#{page.wiki}/#{page.title}/json"
+        res.redirect "/#{page.wiki}/#{page.title}/#{ext}"
         return
-      data =  page?.text.split(/\n/) or []
-      # 行ごとの古さを計算する
-      Line.timestamps wiki, title, data, (err, timestamps) ->
-        # データ返信
-        res.send
-          date:        page?.timestamp
-          timestamps:  timestamps
-          data:        data
+      switch ext
+        when 'text'
+          res.send page?.text or ''
+          break
+        when 'json'
+          data =  page?.text.split(/\n/) or []
+          # 行ごとの古さを計算する
+          Line.timestamps wiki, title, data, (err, timestamps) ->
+            # データ返信
+            res.send
+              date:        page?.timestamp
+              timestamps:  timestamps
+              data:        data
+          break
 
 
   # 関連ページの配列 repimageも一緒に返す
