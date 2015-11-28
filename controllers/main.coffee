@@ -48,7 +48,7 @@ module.exports = (app) ->
       version: req.query.version
 
 
-	# ランダムにページを表示
+  # ランダムにページを表示
   app.get /^\/([^\/]+)\/__random$/, (req, res) ->
     # 認証必要
     wiki  = req.params[0]
