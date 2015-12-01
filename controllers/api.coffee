@@ -1,5 +1,6 @@
 debug = require('debug')('gyazz:controller:api')
 mongoose = require 'mongoose'
+cors     = require 'cors'
 _        = require 'underscore'
 async    = require 'async'
 PNG      = require '../lib/png'
@@ -44,7 +45,7 @@ module.exports = (app) ->
         data: list
 
   #  ページ内容取得 (apiとしてだけ)用意
-  app.get /^\/([^\/]+)\/(.*)\/(text|json)$/, (req, res) ->
+  app.get /^\/([^\/]+)\/(.*)\/(text|json)$/, cors(), (req, res) ->
     wiki  = req.params[0]
     title = req.params[1]
     ext   = req.params[2]
