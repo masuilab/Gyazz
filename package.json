@@ -7,14 +7,15 @@
   "scripts": {
     "start": "coffee gyazz.coffee",
     "prestart": "grunt build",
-    "test": "grunt test"
+    "test": "grunt test",
+    "watch": "grunt"
   },
   "dependencies": {
     "async": "^1.4.2",
     "body-parser": "~1.0.0",
     "buffer-crc32": "*",
     "coffee-errors": "*",
-    "coffee-script": "^1.7.1",
+    "coffee-script": "^1.10.0",
     "coffeelint": "*",
     "cookie-parser": "^1.0.1",
     "cors": "^2.7.1",
