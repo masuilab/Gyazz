@@ -1,5 +1,3 @@
-# _ = require 'underscore' if typeof module != "undefined" && module.exports
-
 # 16進2桁
 window.hex2 = (v) ->
   v = Math.floor(v)

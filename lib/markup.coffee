@@ -1,7 +1,7 @@
 # convert Gyazz Markup to HTML
 'use strict'
 
-_ = require 'underscore'
+_ = require 'lodash'
 
 module.exports = class GyazzMarkup
 

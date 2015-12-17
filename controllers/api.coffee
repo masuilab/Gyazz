@@ -1,7 +1,7 @@
 debug = require('debug')('gyazz:controller:api')
 mongoose = require 'mongoose'
 cors     = require 'cors'
-_        = require 'underscore'
+_        = require 'lodash'
 async    = require 'async'
 PNG      = require '../lib/png'
 

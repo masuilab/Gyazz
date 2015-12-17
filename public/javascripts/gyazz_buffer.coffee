@@ -3,8 +3,6 @@
 # 適宜HTMLを更新したりサーバと通信したりする必要あり
 #
 
-# _ = require 'underscore' if typeof module != "undefined" && module.exports
-
 class GyazzBuffer
   init: (gs, gd, tag) ->
     @gs = gs
@@ -14,7 +12,7 @@ class GyazzBuffer
   # levelの長さの空白文字列
   _indentstr = (level) ->
     ([0...level].map (x) -> " ").join('')
-    
+
   # 文字列のインデントを計算
   _indent = (line) ->
     line.match(/^( *)/)[1].length

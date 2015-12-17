@@ -3,7 +3,7 @@
 #
 
 debug    = require('debug')('gyazz:pair')
-_        = require 'underscore'
+_        = require 'lodash'
 mongoose = require 'mongoose'
 
 module.exports = (app) ->

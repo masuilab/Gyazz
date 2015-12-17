@@ -3,7 +3,7 @@
 #
 
 debug    = require('debug')('gyazz:page')
-_        = require 'underscore'
+_        = require 'lodash'
 mongoose = require 'mongoose'
 memjs    = require 'memjs'
 cache    = memjs.Client.create null, {expires: 60}
