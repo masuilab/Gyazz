@@ -53,7 +53,7 @@ components =
   models:      [ 'access', 'pair', 'page', 'attr', 'line' ]
   controllers: [ 'api', 'main' ]
   lib:         [ 'png' ]
-  sockets:     [ 'readwrite' ]
+  sockets:     [ 'page' ]
   events:      [ 'notify' ]
 
 for type, items of components

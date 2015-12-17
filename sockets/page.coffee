@@ -2,7 +2,7 @@
 # socket.ioを利用したデータ読み書き (サーバ側)
 #
 
-debug    = require('debug')('gyazz:sockets:readwrite')
+debug    = require('debug')('gyazz:sockets:page')
 mongoose = require 'mongoose'
 async    = require 'async'
 
@@ -29,7 +29,7 @@ module.exports = (app) ->
       socket.leave room
 
     socket.on 'read', (req) ->
-      debug "readwrite.coffee: #{wiki}::#{title} read request from client"
+      debug "#{wiki}::#{title} read request from client"
       Page.findByName wiki, title, req.opts, (err, page) ->
         debug "findByName callback"
         if err
@@ -38,7 +38,7 @@ module.exports = (app) ->
         data = page?.text.split(/\n/) or []
         # 行ごとの古さを計算する
         Line.timestamps wiki, title, data, (err, timestamps) ->
-          debug "readwrite.coffee: send data back to client"
+          debug "send data back to client"
           socket.emit 'pagedata', { # 自分だけに返信
             date:        page?.timestamp
             timestamps:  timestamps
@@ -50,7 +50,7 @@ module.exports = (app) ->
     # pair.coffee でDBから取得している
     #
     socket.on 'write', (req) ->
-      debug "readwrite.coffee: #{wiki}::#{title} write request from client"
+      debug "#{wiki}::#{title} write request from client"
       text     = req.data
       keywords = req.keywords
 
