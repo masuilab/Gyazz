@@ -10,15 +10,11 @@ license_key = process.env.NEW_RELIC_LICENSE_KEY or newRelicConfig.license_key
 if(app_name.length > 0 and license_key.length > 0)
   require('newrelic')
 
-dotenv   = require 'dotenv'
 express  = require 'express'
 favicon  = require 'serve-favicon'
 mongoose = require 'mongoose'
 path     = require 'path'
 debug    = require('debug')('gyazz:app')
-
-## load environments from '.env'
-dotenv.load()
 
 ## express modules
 bodyParser = require 'body-parser'
